@@ -1,15 +1,24 @@
 <?php
 	class Node{
 
-    	public $data;
+		const POINTER = 0;	//指针
+
+		const THREAD = 1;	//线索
+
+    	public $data;	//存放指针的数据
     	
     	public $left = null;	//左节点
 
         public $right = null;   //右节点
 
+        public $ltag = 0;		//左孩子标记
+
+        public $rtag = 0;		//右孩子标记
+
     	public function __construct($data){
     		$this->data = $data;
     		$this->left = $this->right = null;
+    		$this->ltag = $this->rtag = 0;
     	}
     }
 
@@ -22,9 +31,13 @@
 	
     */
 
-	class BinarySearchTree{
+	class ThreadedBinaryTree{
+
+		private $pre = null;
 
 		public $root = null;
+
+		
 
 		public function createBinarySearchTree(array $dataList){
 
@@ -129,46 +142,129 @@
 		}
 
 		public function preorderTraversal($tree,$stack = array()){
-			if(is_null($tree)){
-				return $stack;
+
+
+			if(!is_null($tree)){
+				if(!is_null($tree->left)){
+					$tree->ltag = Node::POINTER;
+				}else{
+					$tree->ltag = Node::THREAD;
+				}
+
+				if(!is_null($tree->right)){
+					$tree->rtag = Node::POINTER;
+				}else{
+					$tree->rtag = Node::THREAD;
+				}
+
+				if(!is_null($this->pre)){
+					if(Node::THREAD == $this->pre->ltag){
+						$this->pre->left = $tree;
+					}
+					if(Node::THREAD == $this->pre->rtag){
+						$this->pre->right = $tree;
+					}
+				}
+				
+
+				$this->pre == $tree;
+
+				array_push($stack,$tree->data);
+				
+				if(!is_null($tree->left)){
+					$stack = $this->preorderTraversal($tree->left,$stack);
+				}
+				if(!is_null($tree->right)){
+					$stack = $this->preorderTraversal($tree->right,$stack);
+				}
 			}
-			array_push($stack,$tree->data);
-			if(!is_null($tree->left)){
-				$stack = $this->preOrderTree($tree->left,$stack);
-			}
-			if(!is_null($tree->right)){
-				$stack = $this->preOrderTree($tree->right,$stack);
-			}
+
+			
 			return $stack;
 		}
 
 		public function inorderTraversal($tree,$stack){
-			if(is_null($tree)){
-				return $stack;
+
+			if(!is_null($tree)){
+				if(!is_null($tree->left)){
+					$tree->ltag = Node::POINTER;
+				}else{
+					$tree->ltag = Node::THREAD;
+				}
+
+				if(!is_null($tree->right)){
+					$tree->rtag = Node::POINTER;
+				}else{
+					$tree->rtag = Node::THREAD;
+				}
+
+				//因为空链域才存放指针，所以址判断链域
+				if(!is_null($this->pre)){
+					if(Node::THREAD == $this->pre->ltag){
+						$this->pre->left = $tree;
+					}
+					if(Node::THREAD == $this->pre->rtag){
+						$this->pre->right = $tree;
+					}
+				}
+
+				//遍历
+				if(!is_null($tree->left)){
+					$stack = $this->inorderTraversal($tree->left,$stack);
+				}
+				array_push($stack,$tree->data);
+				if(!is_null($tree->right)){
+					$stack = $this->inorderTraversal($tree->right,$stack);
+				}
+
+				$this->pre == $tree;
+
 			}
-			if(!is_null($tree->left)){
-				$stack = $this->midOrderTree($tree->left,$stack);
-			}
-			array_push($stack,$tree->data);
-			if(!is_null($tree->right)){
-				$stack = $this->midOrderTree($tree->right,$stack);
-			}
+
+			
 			return $stack;
 		}
 
-		public function postorderTraversal($tree,$stack){
-			if(is_null($tree)){
-				return $stack;
-			}
-			if(!is_null($tree->left)){
-				$stack = $this->postorderTraversal($tree->left,$stack);
+		public function postorderTraversal($tree,$stack = array()){
+
+
+			if(!is_null($tree)){
+
+				if(!is_null($tree->left)){
+					$tree->ltag = Node::POINTER;
+				}else{
+					$tree->ltag = Node::THREAD;
+				}
+
+				if(!is_null($tree->right)){
+					$tree->rtag = Node::POINTER;
+				}else{
+					$tree->rtag = Node::THREAD;
+				}
+
+				//因为空链域才存放指针，所以址判断链域
+				if(!is_null($this->pre)){
+					if(Node::THREAD == $this->pre->ltag){
+						$this->pre->left = $tree;
+					}
+					if(Node::THREAD == $this->pre->rtag){
+						$this->pre->right = $tree;
+					}
+				}
+
+				if(!is_null($tree->left)){
+					$stack = $this->postorderTraversal($tree->left,$stack);
+				}
+				
+				if(!is_null($tree->right)){
+					$stack = $this->postorderTraversal($tree->right,$stack);
+				}
+
+				array_push($stack,$tree->data);
+
+				$this->pre == $tree;
 			}
 			
-			if(!is_null($tree->right)){
-				$stack = $this->postorderTraversal($tree->right,$stack);
-			}
-
-			array_push($stack,$tree->data);
 			return $stack;
 		}
 
@@ -177,7 +273,7 @@
 
 	
 
-	$tree = new BinarySearchTree();
+	$tree = new ThreadedBinaryTree();
 
 	$tree->insert($tree->root,5);
 	$tree->insert($tree->root,1);
@@ -209,6 +305,8 @@
 
 	$stack = $tree->postorderTraversal($tree->root,$stack);
 
-	print_r($stack);
+	//print_r($stack);
+
+	var_dump($tree->root);
 
 ?>
