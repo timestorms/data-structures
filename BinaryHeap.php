@@ -1,24 +1,29 @@
 <?php
-	class BinarySearchTree{
+	class BinaryHeap{
 
 		public $root = null;
 
-		public $heap = [];
+		public $heap = [4];
 
 		public function insert($heap,$data){
 
 			$length = count($heap);
-			
-			$this->heap[] = $data;
 
-			for($i=){
-
+			if($length<=0){
+				//return $heap;
 			}
+
+			for($i=++$length;$this->heap[$i/2]>$data;$i/=2){
+				echo $i."\n";
+				$this->heap[$i] = $this->heap[$i/2];
+			}
+			//echo "12\n";
+			$this->heap[$i] = $data;
 
 			return $heap;
 		}
 
-		public function swap($arr = array(),$i,$j){
+		public function swap(&$arr = array(),$i,$j){
 			if(isset($arr[$i]) && isset($arr[$j])){
 				$tmp = $arr[$i];
 				$arr[$i] = $arr[$j];
@@ -39,32 +44,6 @@
 			}
 
 			return null;
-		}
-
-		public function find($tree,$data){
-			if(is_null($tree)){
-				return null;
-			}
-			if($data < $tree->data){
-				$tree = $this->find($tree->left,$data);
-			}elseif($data > $tree->data){
-				$tree = $this->find($tree->right,$data);
-			}
-
-			return $tree;
-		}
-
-		public function findMin($tree){
-			if(is_null($tree)){
-				return null;
-			}
-			if(is_null($tree->left)){
-				return $tree;
-			}else{
-				$tree = $this->findMin($tree->left);
-			}
-
-			return $tree;
 		}
 
 
@@ -111,87 +90,21 @@
 			return $tree;
 		}
 
-		public function preorderTraversal($tree,$stack = array()){
-			if(is_null($tree)){
-				return $stack;
-			}
-			array_push($stack,$tree->data);
-			if(!is_null($tree->left)){
-				$stack = $this->preOrderTree($tree->left,$stack);
-			}
-			if(!is_null($tree->right)){
-				$stack = $this->preOrderTree($tree->right,$stack);
-			}
-			return $stack;
-		}
-
-		public function inorderTraversal($tree,$stack){
-			if(is_null($tree)){
-				return $stack;
-			}
-			if(!is_null($tree->left)){
-				$stack = $this->midOrderTree($tree->left,$stack);
-			}
-			array_push($stack,$tree->data);
-			if(!is_null($tree->right)){
-				$stack = $this->midOrderTree($tree->right,$stack);
-			}
-			return $stack;
-		}
-
-		public function postorderTraversal($tree,$stack){
-			if(is_null($tree)){
-				return $stack;
-			}
-			if(!is_null($tree->left)){
-				$stack = $this->postorderTraversal($tree->left,$stack);
-			}
-			
-			if(!is_null($tree->right)){
-				$stack = $this->postorderTraversal($tree->right,$stack);
-			}
-
-			array_push($stack,$tree->data);
-			return $stack;
-		}
-
 	}
 
 
 	
 
-	$tree = new BinarySearchTree();
+	$heap = new BinaryHeap();
 
-	$tree->insert($tree->root,5);
-	$tree->insert($tree->root,1);
-	$tree->insert($tree->root,3);
-	$tree->insert($tree->root,2);
-	$tree->insert($tree->root,4);
-	$tree->insert($tree->root,6);
-	$tree->insert($tree->root,7);
+	$heap->insert($heap->heap,5);
+	$heap->insert($heap->heap,1);
+	$heap->insert($heap->heap,3);
+	$heap->insert($heap->heap,2);
+	$heap->insert($heap->heap,0);
+	// $heap->insert($heap->heap,6);
+	// $heap->insert($heap->heap,7);
 
-	
-
-	//$tree->delete($tree->root,3);
-
-	//print_r($tree->root);
-
-	//$tree->insert($tree->root,3);
-
-	//print_r($tree->findMax($tree->root));
-
-	//print_r($tree->findMin($tree->root));
-
-	//var_dump($tree->find($tree->root,3
-
-	$stack = [];
-
-	//$stack = $tree->preorderTraversal($tree->root,$stack);
-
-	//$stack = $tree->inorderTraversal($tree->root,$stack);
-
-	$stack = $tree->postorderTraversal($tree->root,$stack);
-
-	print_r($stack);
+	print_r($heap->heap);
 
 ?>
