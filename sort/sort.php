@@ -32,8 +32,7 @@
     heapSort($arr);
 
     print_r($arr);
-    //var_dump($arr);
-
+    
     function HeapAdjust(array &$arr,$start,$end){
         $temp = $arr[$start];
         //沿关键字较大的孩子节点向下筛选
