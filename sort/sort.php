@@ -25,11 +25,11 @@
 
     //$arr = insertSort($arr);
 
-    //mergeSort($arr);
+    mergeSort($arr);
 
     //quickSort_2($arr);
 
-    heapSort($arr);
+    //heapSort($arr);
 
     print_r($arr);
     
@@ -194,7 +194,7 @@
         $k = $start;
         $tmp = array();
 
-        //数组arr中start到mid是有序的，mid到end也是有序的，需要将这部分归并成有序的数组中,i和j分别指向arr两个有序数组的开始元素
+        //数组arr中start到mid是有序的，mid到end也是有序的，需要将这部分归并成有序的数组中,i和j分别指向arr两个有序数组的开始元素，递增
         while($i!=$mid+1 && $j!=$end+1){
            if($arr[$i] >= $arr[$j]){
                $tmp[$k++] = $arr[$j++];
@@ -203,15 +203,15 @@
            }
         }
 
-        //将第一个子序列的剩余部分添加到已经排好序的 $tmp 数组中
+        //将第一个子序列的剩余部分添加到已经排好序的 $tmp 数组中，递增
         while($i != $mid+1){
             $tmp[$k++] = $arr[$i++];
         }
-        //将第二个子序列的剩余部分添加到已经排好序的 $tmp 数组中
+        //将第二个子序列的剩余部分添加到已经排好序的 $tmp 数组中，递增
         while($j != $end+1){
             $tmp[$k++] = $arr[$j++];
         }
-        for($i=$start; $i<=$end; $i++){
+        for($i=$start; $i<=$end; $i++){ //注意起始位置
             $arr[$i] = $tmp[$i];
         }
     }
