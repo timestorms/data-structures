@@ -18,7 +18,7 @@
         //沿关键字较大的孩子节点向下筛选,遍历节点下的所有孩子，确保所有的子树是正常的堆
         //左孩子2 * $start，右孩子2 * $start + 1
         for($j = 2 * $start;$j < $end;$j = 2 * $j){
-            if($j != $end && $arr[$j] < $arr[$j + 1]){
+            if($j != $end && $arr[$j] < $arr[$j + 1]){  //注意终止条件
                 $j ++; //转化为右孩子,找出最大的孩子
             }
             if($temp < $arr[$j]){       //如果父节点比自己最大的孩子小
@@ -29,7 +29,7 @@
             }
             
         }
-        $arr[$start] = $temp;
+        $arr[$start] = $temp;   //被调整节点的最终赋值
     }
 
     function heapSort(array &$arr){

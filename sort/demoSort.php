@@ -46,7 +46,6 @@
         }
 
         $arr[$start] = $tmp;
-        
     }
 
     function swap(&$arr,$i,$j){

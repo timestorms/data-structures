@@ -33,38 +33,45 @@
 
     print_r($arr);
     
-    function HeapAdjust(array &$arr,$start,$end){
-        $temp = $arr[$start];
-        //沿关键字较大的孩子节点向下筛选
-        //左右孩子计算（我这里数组开始下标识 0）
-        //左孩子2 * $start + 1，右孩子2 * $start + 2
-        for($j = 2 * $start + 1;$j <= $end;$j = 2 * $j + 1){
-            if($j != $end && $arr[$j] < $arr[$j + 1]){
-                $j ++; //转化为右孩子
-            }
-            if($temp >= $arr[$j]){
-                break;  //已经满足大根堆
-            }
-            //将根节点设置为子节点的较大值
-            $arr[$start] = $arr[$j];
-            //继续往下
-            $start = $j;
+    /*
+        堆排序
+    */
+    function heapSort(&$arr){
+        if(empty($arr)){
+            return $arr;
         }
-        $arr[$start] = $temp;
+
+        $length = count($arr);
+
+        //建堆过程，从最后一个父节点开始调整堆
+        for($i=floor($length/2);$i>=1;$i--){
+            heapAdjast($arr,$i,$length);
+        }
+
+        //取出最大的元素，然后再次调整堆
+        for($i=$length;$i>=1;$i--){
+            swap($arr,0,$i);        //将最大元素移到最后
+            heapAdjast($arr,0,$i-1);    //对剩余的0到n-1进行堆调整
+        }
     }
 
-    function heapSort(array &$arr){
-        $count = count($arr);
-        //先将数组构造成大根堆（由于是完全二叉树，所以这里用floor($count/2)-1，下标小于或等于这数的节点都是有孩子的节点)
-        for($i = floor($count / 2) - 1;$i >= 0;$i --){
-            HeapAdjust($arr,$i,$count);
+    function heapAdjast(&$arr,$start,$end){
+        $tmp = $arr[$start];
+        //对所有子树进行调整,start子节点为2*$start和2*$start+1
+        for($j=2*$start;$j<$end;$j*=2){ 
+            //找出最大的孩子
+            if($j!=$end && $arr[$j]<$arr[$j+1]){
+               $j++; 
+            }
+
+            //如果子节点比父节点大，进行调整
+            if($tmp<$arr[$j]){
+                $arr[$start] = $arr[$j];
+                $start = $j;    //继续循环
+            }
         }
-        for($i = $count - 1;$i >= 0;$i --){
-            //将堆顶元素与最后一个元素交换，获取到最大元素（交换后的最后一个元素），将最大元素放到数组末尾
-            swap($arr,0,$i);  
-            //经过交换，将最后一个元素（最大元素）脱离大根堆，并将未经排序的新树($arr[0...$i-1])重新调整为大根堆
-            HeapAdjust($arr,0,$i - 1);
-        }
+
+        $arr[$start] = $tmp;
     }
 
     function quickSort_2(&$arr){
